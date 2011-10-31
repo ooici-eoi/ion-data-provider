@@ -1,0 +1,8 @@
+#!/bin/bash
+EXP_ARGS=1
+if [ $# -ne $EXP_ARGS ]; then 
+	echo "Must enter 1 argument that is the dataset_id"
+else
+	echo "dataset_id = " $1
+	bin/twistd cc -n -h %(hostname)s -a sysname=%(sysname)s,dataset_id=$1 res/apps/eoiagents.app res/apps/provide.py
+fi

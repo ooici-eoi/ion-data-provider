@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0">
+    <info module="ion-data-provider" organisation="net.ooici" revision="0.0.1"/>
+    <configurations>
+        <conf name="compile"/>
+    </configurations>
+    <dependencies>
+    	<!-- Eoi-agents dependency - transitive dependencies included -->
+        <dependency org="net.ooici" name="eoi-agents" rev="1.0.5" conf="*->*,!sources,!javadoc" transitive="true"/>
+    </dependencies>
+</ivy-module>

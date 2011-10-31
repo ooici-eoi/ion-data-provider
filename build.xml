@@ -1,0 +1,73 @@
+<!-- Ant build file for ion-data-provider -->
+<project name="ion-data-provider" default="info" xmlns:ivy="antlib:org.apache.ivy.ant" basedir=".">
+    <description>
+        This is the ANT build file for the OOI CI Python capability
+        container and service platform.
+    </description>
+    
+	<!-- import properties -->
+	<property file="build.properties" />
+	<!-- ivy properties & settings -->
+	<property file="${settings.dir}/ivysettings.properties" />
+	<ivy:settings file="${settings.dir}/ivysettings.xml" />
+	<!-- ooici properties -->
+	<property file="${settings.dir}/ooici.properties" />
+	<!-- import the ooici_build.xml -->
+	<import file="${settings.dir}/ooici-build.xml" />
+
+  <!-- set global properties for this build -->
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+
+  <target name="info">
+    <echo message="ioncore-python ant build file. Specify a target to build."/>
+    <echo message="Run 'ant -p' to retrieve a list of targets."/>
+  </target>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+ <target name="clean-more" > 
+    <delete dir="ioncore.egg-info"/>
+    <delete dir="_trial_temp"/>
+    <!--<antcall target="remeggs"/>-->
+  </target>
+
+  <target name="dir.check">
+      <condition property="dir.exists">
+          <available file="eggs" type="dir"/>
+      </condition>
+  </target>
+
+  <target name="remeggs" depends="dir.check" if="dir.exists">
+      <echo message="Remove buildout eggs eggs/ionprot*"/>
+      <delete includeemptydirs="true">
+           <fileset dir="eggs" includes="**/ionproto*/" />
+       </delete>
+    <echo message="Use 'ant clean-buildout' if you want to completely clean out buildout directories."/>
+   </target>
+
+  <target name="clean-buildout"
+        description="clean up buildout dirs" depends="clean" >
+    <echo message="Clean up buildout directories.  Please run `python bootstrap.py` to start buildout."/>
+    <delete dir="parts"/>
+    <delete dir="develop-eggs"/>
+    <delete dir="bin"/>
+    <delete dir="downloads"/>
+    <delete dir="eggs"/>
+    <delete file=".installed.cfg"/>
+  </target>
+  
+  <target name="init-java" depends="ivy-init" description="retrieve java DAF libraries" >
+  	<echo message="retrieve java Dataset Agent Framework libraries"/>
+  	<mkdir dir="${lib.dir}"/>
+  	<delete dir="${ivy.cache.dir}/net.ooici/ioncore-java" />
+	<delete dir="${ivy.cache.dir}/net.ooici/eoi-agents" />
+	<ivy:retrieve sync="true" overwriteMode="always" />
+	<!-- Copy the log4j.properties file -->
+	<copy todir="${lib.dir}" file="log4j.properties"/>
+  </target>
+
+</project>
